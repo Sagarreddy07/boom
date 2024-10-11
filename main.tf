@@ -1,12 +1,16 @@
 provider "aws" {
-  region = "us-west-2"  # Change this to your preferred AWS region
+  region = var.region
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Change this to a valid AMI ID
-  instance_type = "t2.micro"
+  ami           = var.ami_id
+  instance_type = var.instance_type
 
   tags = {
-    Name = "Terraform-EC2"
+    Name = "EC2Instance-${var.environment}"
   }
+}
+
+output "instance_id" {
+  value = aws_instance.example.id
 }
