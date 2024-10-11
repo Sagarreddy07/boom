@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(name: 'ENV', choices: ['dev', 'uat', 'prod'], description: 'Select the environment')
+    }
+
+    environment {
+        AWS_CREDENTIALS = credentials('aws-credentials') // Configure AWS credentials in Jenkins
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout the respective environment branch
+                    git branch: "${params.ENV}", url: 'https://github.com/your-repo/terraform-ec2-instances.git'
+                }
+            }
+        }
+}
+}
